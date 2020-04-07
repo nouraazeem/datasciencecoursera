@@ -1,0 +1,71 @@
+---
+title: "Exploratory Analysis Project 1"
+author: "Noura Azeem"
+date: "4/6/2020"
+output: html_document
+---
+
+Assignment #1 for the Exploratory Analysis course. 
+
+Below is the data prep for this assignment to subset the data to the specificed timeframe. 
+
+```{r}
+install.packages("data.table")
+library("data.table")
+library("dplyr")
+setwd("~/datasciencecoursera/Exp_Analysis_4/data")
+
+elec1 <- read.table("household_power_consumption.txt", header = TRUE, sep=";", stringsAsFactors = FALSE, dec=".")
+subset <- elec1[elec1$Date %in% c("1/2/2007", "2/2/2007"),]
+
+```
+
+Plot 1 is a histogram of our data
+
+```{r}
+# Plot 1 
+hist(as.numeric(subset$Global_active_power), col="red", main= "Global Active Power", xlab = "Global Active Power (kilowatts)")
+```
+
+Plot 2 is a time series plot
+```{r}
+time2 <- strptime(paste(subset$Date, subset$Time, sep=" "), "%d/%m/%Y %H:%M:%S")
+plot(time2, elec2$Global_active_power, type="l", xlab= "", ylab="Global Active Power (kilowatts)")
+```
+
+Plot 3  is sub-metering plots
+
+```{r}
+plot(time2, as.numeric(subset$Sub_metering_1), type = "l", ylab = "Energy Submetering", xlab= "")
+lines(time2, as.numeric(subset$Sub_metering_2), type = "l", col = "red")
+lines(time2, as.numeric(subset$Sub_metering_3), type = "l", col = "blue")
+legend("topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lty = 1, lwd = 2.5, col= c("black", "red", "blue"))
+```
+
+Plot 4 is the 4 plots
+```{r}
+par(mfrow = c(2,2), mar = c(4,4,2,1), oma= c(0,0,2,0))
+
+# Top left
+plot(time2, subset$Global_active_power, type = "l", xlab = "", ylab= "Global Active Power", cex= 0.2)
+# Top right
+plot(time2, subset$Voltage, type = "l", xlab="datatime", ylab = "Voltage")
+# Bottom left
+plot(time2, as.numeric(subset$Sub_metering_1), type = "l", ylab = "Energy Submetering", xlab= "")
+lines(time2, as.numeric(subset$Sub_metering_2), type = "l", col = "red")
+lines(time2, as.numeric(subset$Sub_metering_3), type = "l", col = "blue")
+legend("topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), lty = 1, lwd = 2.5, col= c("black", "red", "blue"))
+#Bottom right
+plot(time2, subset$Global_active_power, type = "l", xlab = "datetime", ylab = "Global_reactive_power", cex = 0.2)
+
+```
+
+
+
+
+
+
+
+
+
+
